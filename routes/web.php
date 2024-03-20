@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ExportPdfController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -14,6 +15,8 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('users', UserController::class)->name('users.index');
+
+    Route::post('export-pdf', ExportPdfController::class)->name('export.pdf');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
