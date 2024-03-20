@@ -20,7 +20,7 @@
     >
         {{ $slot }}
     </button>
-    <span class="font-bold" x-text="message"></span>
+    <span class="font-bold" x-text="message.includes('Error:') ? message.slice(6) : message" :class="{ 'text-red-500': message.includes('Error:') }"></span>
     <template x-if="link">
         <a x-bind:href="link" x-text="link" target="_blank" class="text-blue-600 underline"></a>
     </template>

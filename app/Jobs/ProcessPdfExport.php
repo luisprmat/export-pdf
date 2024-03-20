@@ -32,11 +32,20 @@ class ProcessPdfExport implements ShouldQueue
             'message' => __('Exporting').'...',
         ]));
 
-        sleep(5);
+        try {
+            sleep(5);
 
-        event(new ExportPdfStatusUpdated($this->user, [
-            'message' => __('Complete!'),
-            'link' => Storage::disk('public')->url('users.pdf'),
-        ]));
+            event(new ExportPdfStatusUpdated($this->user, [
+                'message' => __('Complete!'),
+                'link' => Storage::disk('public')->url('users.pdf'),
+            ]));
+
+        } catch (\Throwable $th) {
+            event(new ExportPdfStatusUpdated($this->user, [
+                'message' => 'Error:'.__('Whoops! Something went wrong.'),
+            ]));
+
+            logger($th->getMessage());
+        }
     }
 }
