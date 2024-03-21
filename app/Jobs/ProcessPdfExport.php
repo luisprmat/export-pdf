@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Events\ExportPdfStatusUpdated;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -33,7 +34,10 @@ class ProcessPdfExport implements ShouldQueue
         ]));
 
         try {
-            sleep(5);
+            $users = User::all();
+
+            Pdf::loadView('pdf.users', compact('users'))
+                ->save('users.pdf', 'public');
 
             event(new ExportPdfStatusUpdated($this->user, [
                 'message' => __('Complete!'),
